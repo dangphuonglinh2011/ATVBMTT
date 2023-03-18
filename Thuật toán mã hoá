@@ -1,0 +1,35 @@
+# ATVBMTT
+import hashlib
+from Crypto.Cipher import AES
+from Crypto.Util.Padding import pad, unpad
+
+# Set up encryption key and initialization vector
+key = b'ThisIsASecretKey1234567890'
+iv = b'ThisIsAnIV123456'
+
+# Encryption function
+def encrypt_message(message):
+    cipher = AES.new(key, AES.MODE_CBC, iv)
+    ciphertext = cipher.encrypt(pad(message.encode(), AES.block_size))
+    return ciphertext
+
+# Decryption function
+def decrypt_message(ciphertext):
+    cipher = AES.new(key, AES.MODE_CBC, iv)
+    message = unpad(cipher.decrypt(ciphertext), AES.block_size)
+    return message.decode()
+
+# Hashing function
+def hash_message(message):
+    hashed_message = hashlib.sha256(message.encode()).hexdigest()
+    return hashed_message
+
+# Example usage
+message = "This is a secret message."
+encrypted_message = encrypt_message(message)
+decrypted_message = decrypt_message(encrypted_message)
+hashed_message = hash_message(message)
+print("Original message: ", message)
+print("Encrypted message: ", encrypted_message)
+print("Decrypted message: ", decrypted_message)
+print("Hashed message: ", hashed_message)
